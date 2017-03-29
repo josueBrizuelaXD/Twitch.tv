@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link href="style.css" rel="stylesheet">
+
+</head>	
+	
+<body>
+	
+	
+			
+			<h1>TWITCH STREAMERS</h1>
+		
+		
+<!--		<button onclick="getData()">Get Data</button>-->
+	
+	
+	
+	<div>
+		<div class="filter-menu">
+		<button class="btn-active" onclick="filterChannels(this)">All</button>
+		<button onclick="filterChannels(this)">Online</button>	
+		<button onclick="filterChannels(this)">Offline</button>
+		</div>	
+	</div>
+	
+	<div class="channels-container">
+		
+<!--
+		<div class="channel-card">
+			
+		<div>
+		<img class="card-img" src="10418350_463821910427504_1204641619280473245_n.png">
+		</div>
+		
+		<div class="card-text">
+			<h4 class="card-title">Title</h4>	
+			<p class="card-par">status</p>
+		</div>
+		
+		</div>
+		
+-->
+			
+		
+			
+			
+		</div>
+		
+		
+	</div>
+	
+
+</body>
+	
+	<script>
+		
+		var channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+		var channelsCon = document.getElementsByClassName("channels-container")[0];
+	
+		
+		
+		
+		function getData() {
+			
+			for (var i = 0; i < channels.length; i++) {
+			var channel = channels[i];
+			
+			var s = document.createElement("script");
+			s.src = "https://wind-bow.glitch.me/twitch-api/streams/" + channel + "?callback=parseJSON";
+			document.body.appendChild(s);
+			s.parentNode.removeChild(s);	
+		}
+		
+			
+			
+		}
+		
+		function parseJSON(data) {
+			
+			
+			if (data["status"] === 404) {
+			console.log("error: " + data["status"]);		
+			} else {
+				
+			if (data["stream"] === null) {
+				console.log("data stream is null: " +  data["stream"]);
+				
+				
+			
+				
+			var channelLink = data["_links"]["channel"];
+				
+				
+				console.log("link is: " + channelLink);
+							
+			var str = channelLink.slice(38, channelLink.length);
+			console.log("str: " + str);	
+				
+				
+				
+				var s = document.createElement("script");
+			s.src = "https://wind-bow.glitch.me/twitch-api/channels/" + str + "?callback=createOfflineChannels";
+			document.body.appendChild(s);
+			s.parentNode.removeChild(s);	
+				
+			} else {
+				
+			createOnlineElements(data);
+				
+			}		
+				
+			}
+		}
+		
+		
+		function createOnlineElements(data) {
+			var channelCard = document.createElement("div");
+			channelCard.setAttribute("class", "channel-card online");
+			channelCard.style.border = "5px solid #50AE55";
+			
+			var streamURL = "" + data["stream"]["channel"]["url"] + "";
+			
+			channelCard.setAttribute("onclick", "openLiveChannel(" + "'" + streamURL + "'" +")");
+				
+			var firstDivChannel = document.createElement("div");
+				
+			var channelLogo = document.createElement("img");
+			
+			channelLogo.src = data["stream"]["channel"]["logo"];
+				
+			firstDivChannel.appendChild(channelLogo);
+				
+			var secondDivChannel = document.createElement("div");
+			secondDivChannel.setAttribute("class", "card-text");
+				
+			var titleChannel = document.createElement("h3");
+			titleChannel.setAttribute("class", "card-title");	
+			titleChannel.innerHTML = data["stream"]["channel"]["display_name"];	
+				
+			var statusChannel = document.createElement("p");
+			statusChannel.setAttribute("class", "card-par");	
+				
+			statusChannel.innerHTML = data["stream"]["channel"]["status"];	
+				
+			secondDivChannel.appendChild(titleChannel);
+				
+			secondDivChannel.appendChild(statusChannel);	
+				
+            channelCard.appendChild(firstDivChannel);
+				
+			channelCard.appendChild(secondDivChannel);	
+			
+			channelsCon.appendChild(channelCard);
+				
+		}
+		
+		
+		function createOfflineChannels(data) {
+			
+			if (data["status"] === 404) {
+			console.log("error: " + data["status"]);		
+			} else {
+				var channelCard = document.createElement("div");
+			channelCard.setAttribute("class", "channel-card offline");
+				
+			var streamURL = "" + data["url"] + "";
+			
+			channelCard.setAttribute("onclick", "openLiveChannel(" + "'" + streamURL + "'" +")");	
+				
+				
+				channelCard.style.border = "5px solid #757575"
+				
+			var firstDivChannel = document.createElement("div");
+				
+			var channelLogo = document.createElement("img");
+			
+			channelLogo.src = data["logo"];
+				
+			firstDivChannel.appendChild(channelLogo);
+				
+			var secondDivChannel = document.createElement("div");
+			secondDivChannel.setAttribute("class", "card-text");
+				
+			var titleChannel = document.createElement("h3");
+			titleChannel.setAttribute("class", "card-title");	
+			titleChannel.innerHTML = data["display_name"];	
+				
+			var statusChannel = document.createElement("p");
+			statusChannel.setAttribute("class", "card-par");	
+				
+			statusChannel.innerHTML = "Offline";	
+				
+			secondDivChannel.appendChild(titleChannel);
+				
+			secondDivChannel.appendChild(statusChannel);	
+				
+            channelCard.appendChild(firstDivChannel);
+				
+			channelCard.appendChild(secondDivChannel);	
+			
+			channelsCon.appendChild(channelCard);
+			}
+			
+			
+		}
+		
+		
+		function openLiveChannel(url) {
+			window.open(url);
+			console.log("url: " + url);
+		}
+		
+		
+		function filterChannels(id) {
+			var menuLinks = document.querySelectorAll(".filter-menu > button");
+			
+		for (var i = 0; i < menuLinks.length; i++) {
+			var menuL = menuLinks[i];
+			menuL.removeAttribute("class");
+		}
+			
+		id.setAttribute("class", "btn-active");
+		
+		var onlineArr = document.getElementsByClassName("online");
+		var offlineArr = document.getElementsByClassName("offline");	
+		
+		switch (id.innerHTML) {
+		case "Offline":
+			
+			
+			for (var j = 0; j < onlineArr.length; j++) {
+				var onlineCard = onlineArr[j];
+				onlineCard.style.display = "none";
+			}
+			
+			for (var t = 0; t < offlineArr.length; t++) {
+				var offlineCard = offlineArr[t];
+				offlineCard.style.display = "block";
+			}
+			
+			break;
+			
+		case "Online":
+			
+			
+			for (var w = 0; w < onlineArr.length; w++) {
+				var onlineCard = onlineArr[w];
+				onlineCard.style.display = "block";
+			}
+			
+			for (var p = 0; p < offlineArr.length; p++) {
+				var offlineCard = offlineArr[p];
+				offlineCard.style.display = "none";
+			}
+			
+		  	break;
+		default:
+			
+	
+		for (var r = 0; r < onlineArr.length; r++) {
+				var onlineCard = onlineArr[r];
+				onlineCard.style.display = "block";
+			}
+			
+			for (var s = 0; s < offlineArr.length; s++) {
+				var offlineCard = offlineArr[s];
+				offlineCard.style.display = "block";
+			}	
+			
+	}
+	
+			
+		}
+		
+		getData();
+		
+				
+			</script>
+	
+	
+</html>

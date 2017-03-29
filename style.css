@@ -1,0 +1,102 @@
+body {
+	background-color: crimson;
+	color: white;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	text-align: center;
+}
+.channels-container {
+	height: 100%;
+	margin: 10px 0px;
+	padding: 10px 30px;
+}
+
+.channel-card {
+	background-color: white;
+	height: 150px;
+	border-radius: 10px;
+	margin: 20px 0px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+button {
+	font-size: 18px;
+	color: white;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	transition: 0.3s ease-in;
+}
+
+.channel-card:hover {
+	transform: scale(1.04);
+}
+
+.filter-menu {
+position: relative;
+width: 50%;	
+left: 65%;
+transform: translateX(-50%);
+}
+
+
+.btn-active {
+	color: white;
+	border-bottom: 2px solid white;
+	cursor: default;
+}
+
+
+.channel-card img {
+	height: 70px;
+	display: inline;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	border-radius: 50%;
+	border-color: crimson;
+	border-width: 3px;
+	border-style: solid;
+	transform: translate(-50%, -50%);
+}
+
+.channel-card div:first-child {
+	width: 15%;
+	height: 150px;
+	position: relative;
+	top: 0px;
+	
+	
+}
+
+.card-text {
+	position: relative;
+	display:block;
+	left: 10%;
+	top: -170px;
+	width: 80%;
+	height: 150px;
+	color: crimson;
+	padding: 10px 0px;
+}
+
+.card-title {
+display: block;
+	color: crimson;
+	text-align: center;
+	padding: 15px 0px 0px 0px;
+	
+	
+}
+
+.card-par {
+	display: block;
+	color: #757575;
+	text-align: center;
+	
+	
+}
