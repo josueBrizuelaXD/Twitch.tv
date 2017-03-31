@@ -38,9 +38,23 @@ button {
 
 .filter-menu {
 position: relative;
+text-align: center;
 width: 50%;	
-left: 65%;
+left: 50%;
 transform: translateX(-50%);
+}
+
+.channel-noti {
+	background: #FCF8E4;
+	width: 80%;
+	margin: 20px auto;
+	border-radius: 10px;
+	padding: 10px;
+	color: #896C3F;
+	text-align: center;
+	transition: 0.5s ease-out;
+	visibility: hidden;
+	opacity: 0;
 }
 
 
